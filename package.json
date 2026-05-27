@@ -1,0 +1,17 @@
+{
+  "name": "healthsync-telemedicine",
+  "version": "1.0.0",
+  "description": "Health-Care & Telemedicine App - MERN Stack Major Project",
+  "scripts": {
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd frontend && npm run build",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "author": "Govinda Padit",
+  "license": "MIT"
+}

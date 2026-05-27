@@ -1,0 +1,38 @@
+{
+  "name": "healthsync-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npx vite",
+    "build": "npx vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "npx vite preview"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.1.5",
+    "axios": "^1.7.7",
+    "date-fns": "^3.6.0",
+    "jspdf": "^2.5.1",
+    "jwt-decode": "^4.0.0",
+    "react": "^18.3.1",
+    "react-calendar": "^5.0.0",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.1",
+    "socket.io-client": "^4.7.5",
+    "zego-express-engine-webrtc": "^3.12.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.9.1",
+    "eslint-plugin-react": "^7.37.1",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.12",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "vite": "^5.4.8"
+  }
+}
