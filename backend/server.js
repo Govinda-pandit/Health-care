@@ -21,6 +21,12 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 
+// Test karne ke liye temporary sab hata kar sirf ye likh do:
+app.use(cors({
+  origin: "*"
+}));
+
+
 // Ensure env is loaded from this backend folder regardless of process.cwd().
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -125,11 +131,6 @@ app.get('/api/db-status', (req, res) => {
 });
 
 
-
-// Test karne ke liye temporary sab hata kar sirf ye likh do:
-app.use(cors({
-  origin: "*"
-}));
 
 const BASE_PORT = parseInt(process.env.PORT, 10) || 5000;
 const MAX_PORT_TRIES = 10;
