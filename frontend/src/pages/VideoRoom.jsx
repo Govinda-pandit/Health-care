@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ZegoExpressEngine } from 'zego-express-engine-webrtc';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+import api from '../api/api.js';
 
 const VideoRoom = () => {
   const { meetingId } = useParams();
@@ -22,16 +21,15 @@ const VideoRoom = () => {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('You are not logged in. Please login first.');
 
-    const res = await fetch(`${API_URL}/api/zego/token?roomId=${encodeURIComponent(roomId)}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: 'Server error' }));
-      throw new Error(err.error || 'Failed to get video token from server.');
+    try {
+      const res = await api.get('/api/zego/token', {
+        params: { roomId }
+      });
+      return res.data; // { token, appId, userId, roomId }
+    } catch (err) {
+      const errorMsg = err.response?.data?.error || 'Failed to get video token from server.';
+      throw new Error(errorMsg);
     }
-
-    return res.json(); // { token, appId, userId, roomId }
   };
 
   // ---------- ZegoCloud Setup ----------

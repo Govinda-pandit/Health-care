@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import axios from 'axios';
+import api from '../api/api.js';
 import Navbar from '../components/Navbar.jsx';
 
 const STATUS_STYLES = {
@@ -34,11 +34,8 @@ const PatientDashboard = () => {
   const fetchAppointments = useCallback(async () => {
     setLoading(true);
     setError('');
-    const token = localStorage.getItem('token');
     try {
-      const res = await axios.get('/api/appointments/my',
-        token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
-      );
+      const res = await api.get('/api/appointments/my');
       const data = res.data;
       const list = Array.isArray(data) ? data : Array.isArray(data?.appointments) ? data.appointments : [];
       setAppointments(list);

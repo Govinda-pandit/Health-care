@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/api.js';
 
 // ─── Debounce Hook ────────────────────────────────────────────────────────────
 function useDebounce(fn, delay) {
@@ -31,7 +31,7 @@ const SymptomChecker = () => {
     setRateLimited(false);
 
     try {
-      const { data } = await axios.post('/api/ai/check-symptoms', { symptom: trimmed });
+      const { data } = await api.post('/api/ai/check-symptoms', { symptom: trimmed });
       lastCheckedSymptom.current = trimmed; // save last successful query
       setResult({
         spec:   data.specialist,

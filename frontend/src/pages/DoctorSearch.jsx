@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import BookSlotPicker from '../components/BookSlotPicker.jsx';
 import Navbar from '../components/Navbar.jsx';
+import api from '../api/api.js';
 
 const SPECIALTIES = ['Cardiologist', 'Dermatologist', 'Neurologist', 'Dentist', 'General Physician'];
 
@@ -25,12 +26,11 @@ const DoctorSearch = () => {
     setLoading(true);
     setError('');
     try {
-      const params = new URLSearchParams();
-      if (specialty) params.append('specialty', specialty);
-      const res = await fetch(`/api/doctors?${params.toString()}`);
-      if (!res.ok) throw new Error(`Server error ${res.status}`);
-      const data = await res.json();
-      setDoctors(Array.isArray(data.doctors) ? data.doctors : []);
+      const params = {};
+      if (specialty) params.specialty = specialty;
+      
+      const res = await api.get('/api/doctors', { params });
+      setDoctors(Array.isArray(res.data?.doctors) ? res.data.doctors : []);
     } catch (err) {
       console.error('Error fetching doctors:', err);
       setError('Failed to load doctors. Please try again.');

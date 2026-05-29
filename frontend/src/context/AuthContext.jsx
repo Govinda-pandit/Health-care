@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api/api';
 import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
@@ -26,7 +26,6 @@ export const AuthProvider = ({ children }) => {
           throw new Error('Invalid token schema');
         }
         setUser(decoded);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       } catch (error) {
         localStorage.removeItem('token');
       }
@@ -35,22 +34,20 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const res = await axios.post('/api/auth/login', { email, password });
+    const res = await api.post('/api/auth/login', { email, password });
     const { token, user: userData } = res.data;
     
     localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     setUser(userData);
     
     return userData;
   };
 
   const register = async (userData) => {
-    const res = await axios.post('/api/auth/register', userData);
+    const res = await api.post('/api/auth/register', userData);
     const { token, user: userDataRes } = res.data;
     
     localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     setUser(userDataRes);
     
     return userDataRes;
@@ -58,7 +55,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
     setUser(null);
   };
 

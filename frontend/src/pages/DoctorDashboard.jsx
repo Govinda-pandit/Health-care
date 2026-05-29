@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
-import axios from 'axios';
+import api from '../api/api.js';
 import Navbar from '../components/Navbar.jsx';
 
 const STATUS_STYLES = {
-  pending:       'badge-yellow',
+  pending:     'badge-yellow',
   confirmed:     'badge-blue',
   'in-progress': 'badge-blue',
   completed:     'badge-green',
@@ -28,11 +28,8 @@ const DoctorDashboard = () => {
   const fetchAppointments = useCallback(async () => {
     setLoading(true);
     setError('');
-    const token = localStorage.getItem('token');
     try {
-      const res = await axios.get('/api/appointments/my',
-        token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
-      );
+      const res = await api.get('/api/appointments/my');
       const data = res.data;
       const list = Array.isArray(data) ? data : Array.isArray(data?.appointments) ? data.appointments : [];
       setAppointments(list);
@@ -60,12 +57,9 @@ const DoctorDashboard = () => {
     if (!selectedTimes.length || !slotDate) return;
     setAddingSlots(true);
     setSlotsMsg('');
-    const token = localStorage.getItem('token');
     try {
       const slots = selectedTimes.map((time) => ({ date: slotDate, time }));
-      await axios.post('/api/doctors/profile', { availableSlots: slots },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.post('/api/doctors/profile', { availableSlots: slots });
       setSlotsMsg('✅ Slots added successfully!');
       setSelectedTimes([]);
     } catch (err) {

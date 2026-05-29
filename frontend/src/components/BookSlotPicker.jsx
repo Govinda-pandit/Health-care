@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
+import api from '../api/api.js';
 
 const BookSlotPicker = ({ doctorId, onBook }) => {
   // ✅ Store date as "YYYY-MM-DD" string instead of Date object
@@ -19,16 +20,10 @@ const BookSlotPicker = ({ doctorId, onBook }) => {
     setSlotError('');
     setSelectedSlot('');
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(
-        `/api/doctors/${doctorId}/slots?date=${date}`,
-        token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
-      );
-
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-      const data = await res.json();
-      setSlots(Array.isArray(data.availableSlots) ? data.availableSlots : []);
+      const res = await api.get(`/api/doctors/${doctorId}/slots`, {
+        params: { date }
+      });
+      setSlots(Array.isArray(res.data?.availableSlots) ? res.data.availableSlots : []);
     } catch (err) {
       console.error('Error fetching slots:', err);
       setSlotError('Failed to load slots.');
@@ -62,25 +57,12 @@ const BookSlotPicker = ({ doctorId, onBook }) => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('Please login to book an appointment.');
 
-      const res = await fetch('/api/appointments/book', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(bookingData),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data?.error || `Booking failed (HTTP ${res.status})`);
-      }
-
-      const data = await res.json();
-      onBook?.(data.appointment);
+      const res = await api.post('/api/appointments/book', bookingData);
+      onBook?.(res.data?.appointment);
     } catch (err) {
       console.error('Booking failed:', err);
-      setBookingError(err.message || 'Booking failed.');
+      const errorMsg = err.response?.data?.error || err.message || 'Booking failed.';
+      setBookingError(errorMsg);
       onBook?.(null);
     } finally {
       setBookingLoading(false);
