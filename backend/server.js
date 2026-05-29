@@ -21,10 +21,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 
-// Test karne ke liye temporary sab hata kar sirf ye likh do:
-app.use(cors({
-  origin: "*"
-}));
+
 
 
 // Ensure env is loaded from this backend folder regardless of process.cwd().
@@ -34,6 +31,12 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const app = express();
+
+// Test karne ke liye temporary sab hata kar sirf ye likh do:
+app.use(cors({
+  origin: "*"
+}));
+
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
