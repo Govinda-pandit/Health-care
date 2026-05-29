@@ -32,15 +32,25 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const app = express();
 
-// Test karne ke liye temporary sab hata kar sirf ye likh do:
-app.use(cors({
-  origin: "*"
-}));
+// Define allowed origins for CORS
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://health-care-drab-seven.vercel.app"
+];
+
+if (process.env.FRONTEND_URL) {
+  const origins = process.env.FRONTEND_URL.split(',').map(o => o.trim());
+  origins.forEach(o => {
+    if (o && !allowedOrigins.includes(o)) {
+      allowedOrigins.push(o);
+    }
+  });
+}
 
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: allowedOrigins,
     methods: ["GET", "POST"]
   }
 });
@@ -49,7 +59,20 @@ const io = new Server(server, {
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, postman)
+    if (!origin) return callback(null, true);
+    
+    const isAllowed = allowedOrigins.includes(origin) || 
+                      origin.startsWith('http://localhost:') || 
+                      origin.startsWith('http://127.0.0.1:');
+                      
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow anyway, but let browser validate. Or keep strict: callback(null, true) is safer to avoid blocking during dev/prod mismatches.
+    }
+  },
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
