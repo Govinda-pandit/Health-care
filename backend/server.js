@@ -128,7 +128,7 @@ app.get('/api/db-status', (req, res) => {
 
 // Test karne ke liye temporary sab hata kar sirf ye likh do:
 app.use(cors({
-    origin: "*"
+  origin: "*"
 }));
 
 const BASE_PORT = parseInt(process.env.PORT, 10) || 5000;
