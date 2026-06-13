@@ -15,7 +15,7 @@ import authRoutes from './routes/auth.js';
 import doctorRoutes from './routes/doctors.js';
 import appointmentRoutes from './routes/appointments.js';
 import prescriptionRoutes from './routes/prescriptions.js';
-import zegoRoutes from './routes/zego.js';
+
 import aiRoutes from './routes/ai.routes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -96,7 +96,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/prescriptions', prescriptionRoutes);
-app.use('/api/zego', zegoRoutes);
+
 app.use('/api/ai', aiRoutes);
 
 // Serve prescriptions PDFs
