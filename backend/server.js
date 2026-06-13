@@ -65,7 +65,8 @@ app.use(cors({
     
     const isAllowed = allowedOrigins.includes(origin) || 
                       origin.startsWith('http://localhost:') || 
-                      origin.startsWith('http://127.0.0.1:');
+                      origin.startsWith('http://127.0.0.1:') ||
+                      origin.startsWith('http://10.197.78.42:'); // local network IP
                       
     if (isAllowed) {
       callback(null, true);
@@ -185,8 +186,9 @@ function startServer(preferredPort = BASE_PORT) {
       }
     });
 
-    server.listen(port, () => {
+    server.listen(port, '0.0.0.0', () => {
       console.log(`🚀 HealthSync Server running on http://localhost:${port}`);
+      console.log(`🌐 Network access: http://10.197.78.42:${port}`);
     });
   };
 

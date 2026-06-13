@@ -6,6 +6,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: true,       // 0.0.0.0 pe listen karega — mobile/other devices access kar sakenge
     port: 5173,
     proxy: {
       '/api': {

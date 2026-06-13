@@ -121,14 +121,7 @@ const VideoRoom = () => {
       return;
     }
 
-    // Check login
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setVideoError('Please login to join the video call.');
-      setStatus('error');
-      return;
-    }
-
+    // Jitsi Meet does NOT need any backend token — anyone with the link can join
     // If already loaded (e.g. HMR), init immediately
     if (window.JitsiMeetExternalAPI) {
       initJitsi();
