@@ -9,10 +9,16 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://health-care-nj05.onrender.com',
-        changeOrigin: true
-      }
-    }
+        // Local backend for development — change to Render URL for production testing:
+        // target: 'https://health-care-nj05.onrender.com',
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
+      '/prescriptions': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
+    },
   },
   resolve: {
     alias: {
