@@ -252,7 +252,7 @@ const DoctorDashboard = () => {
                         )}
                         {(appt.meetingLink || appt.meetingId) && (
                           <a
-                            href={appt.meetingLink || `/video/${appt.meetingId}`}
+                            href={`/video/${appt.meetingId}`}
                             className="btn-primary text-xs"
                           >
                             🎥 Start Call

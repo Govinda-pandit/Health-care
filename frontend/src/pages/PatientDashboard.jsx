@@ -148,7 +148,7 @@ const PatientDashboard = () => {
                     {/* Action */}
                     {(appt.meetingLink || appt.meetingId) && appt.status !== 'completed' && appt.status !== 'cancelled' && (
                       <a
-                        href={appt.meetingLink || `/video/${appt.meetingId}`}
+                        href={`/video/${appt.meetingId}`}
                         className="btn-primary flex-shrink-0 text-sm"
                       >
                         🎥 Join Call
